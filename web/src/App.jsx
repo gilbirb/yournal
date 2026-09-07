@@ -6,7 +6,7 @@ import './App.css'
 import { getEntry, saveEntry } from './api/entries'
 
 function App() {
-  const [entry, setEntry] = useState('');
+  const [entry, setEntry] = useState(null);
 
   useEffect(() => {
     const test = async () => {
@@ -20,7 +20,7 @@ function App() {
   return (
     <>
       <div>
-        {entry.content}
+        {entry?.content}
       </div>
     </>
   )
