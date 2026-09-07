@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { getEntry, saveEntry } from './api/entries'
+import { getEntry } from './api/entries'
 
 function App() {
   const [entry, setEntry] = useState(null);
