@@ -3,6 +3,7 @@ import CalendarView from './components/CalendarView';
 import { listEntries } from './api/entries';
 import { monthRange, toDateKey } from './lib/date';
 import './App.css';
+import EntryEditor from './components/EntryEditor';
 
 function App() {
   const [month, setMonth] = useState(new Date());
@@ -23,13 +24,19 @@ function App() {
   }, [month]);
 
   return (
-    <CalendarView
-      entryKeys={entryKeys}
-      selected={selected}
-      onSelect={(day) => day && setSelected(day)}
-      month={month}
-      onMonthChange={setMonth}
-    />
+    <>
+      <CalendarView
+        entryKeys={entryKeys}
+        selected={selected}
+        onSelect={(day) => day && setSelected(day)}
+        month={month}
+        onMonthChange={setMonth}
+      />
+      <EntryEditor
+        dateKey={toDateKey(selected)}
+        onSaved={(key) => setEntryKeys((prev) => new Set(prev).add(key))}
+      />
+    </>
   )
 }
 
