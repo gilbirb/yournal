@@ -6,6 +6,17 @@ export const toDateKey = (date) => {
   return `${year}-${month}-${day}`;
 };
 
+// "2026-09-07" -> "Monday, 7 September 2026"
+export const formatDateKey = (dateKey, locale = undefined) => {
+  const [year, month, day] = dateKey.split('-').map(Number);
+  return new Date(year, month - 1, day).toLocaleDateString(locale, {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+};
+
 export const monthRange = (date) => {
   const year = date.getFullYear();
   const month = date.getMonth();

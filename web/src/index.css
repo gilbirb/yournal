@@ -1,24 +1,25 @@
 @import "tailwindcss";
+/* must precede the .rdp-root overrides below, or its defaults win */
+@import "react-day-picker/style.css";
 
 :root {
   --text: #6b6375;
   --text-h: #08060d;
-  --bg: #fff;
+  --text-soft: #9a94a3;
+  --bg: #fbfafc;
+  --surface: #fff;
   --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --accent: #12855a;
+  --accent-fg: #fff;
+  --accent-bg: rgba(18, 133, 90, 0.1);
+  --accent-border: rgba(18, 133, 90, 0.5);
+  --danger: #b4245b;
+  --shadow: rgba(24, 16, 40, 0.06) 0 1px 2px, rgba(24, 16, 40, 0.04) 0 8px 24px;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  font: 16px/150% var(--sans);
   color-scheme: light dark;
   color: var(--text);
   background: var(--bg);
@@ -26,88 +27,131 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    --text: #a5a0ae;
+    --text-h: #f3f1f6;
+    --text-soft: #6f6a79;
+    --bg: #131118;
+    --surface: #1b1922;
+    --border: #2e2b38;
+    --accent: #3ecf8e;
+    --accent-fg: #08130e;
+    --accent-bg: rgba(62, 207, 142, 0.14);
+    --accent-border: rgba(62, 207, 142, 0.5);
+    --danger: #f2789f;
+    --shadow: rgba(0, 0, 0, 0.35) 0 1px 2px, rgba(0, 0, 0, 0.25) 0 8px 24px;
   }
+}
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
   margin: 0;
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
 }
 
 h1,
 h2 {
-  font-family: var(--heading);
-  font-weight: 500;
   color: var(--text-h);
+  font-weight: 600;
+  margin: 0;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* ---------- react-day-picker theme ---------- */
+
+.rdp-root {
+  --rdp-accent-color: var(--accent);
+  --rdp-accent-background-color: var(--accent-bg);
+  --rdp-today-color: var(--accent);
+  --rdp-day-width: 44px;
+  --rdp-day-height: 44px;
+  --rdp-day_button-width: 38px;
+  --rdp-day_button-height: 38px;
+  --rdp-day_button-border-radius: 10px;
+  --rdp-day_button-border: 1px solid transparent;
+  --rdp-selected-border: none;
+  --rdp-weekday-opacity: 1;
+  --rdp-weekday-text-transform: uppercase;
+  --rdp-outside-opacity: 0.35;
+  --rdp-nav_button-width: 32px;
+  --rdp-nav_button-height: 32px;
+  margin: 0;
 }
 
-code {
+.rdp-month_caption {
+  color: var(--text-h);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.rdp-weekday {
+  color: var(--text-soft);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+.rdp-day_button {
+  position: relative;
+  color: var(--text-h);
   font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+  transition:
+    background-color 0.12s ease,
+    color 0.12s ease;
+}
+
+.rdp-day_button:hover:not([disabled]) {
+  background: var(--accent-bg);
+}
+
+.rdp-day_button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.rdp-selected .rdp-day_button {
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-weight: 600;
+}
+
+.rdp-today:not(.rdp-selected) .rdp-day_button {
+  border-color: var(--accent-border);
+  font-weight: 600;
+}
+
+.rdp-nav button {
+  color: var(--text);
+  border-radius: 8px;
+}
+
+.rdp-nav button:hover {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* the dot marking a day that has an entry */
+.has-entry .rdp-day_button::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  translate: -50% 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.rdp-selected.has-entry .rdp-day_button::after {
+  background: var(--accent-fg);
 }

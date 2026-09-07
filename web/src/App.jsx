@@ -24,19 +24,26 @@ function App() {
   }, [month]);
 
   return (
-    <>
-      <CalendarView
-        entryKeys={entryKeys}
-        selected={selected}
-        onSelect={(day) => day && setSelected(day)}
-        month={month}
-        onMonthChange={setMonth}
-      />
-      <EntryEditor
-        dateKey={toDateKey(selected)}
-        onSaved={(key) => setEntryKeys((prev) => new Set(prev).add(key))}
-      />
-    </>
+    <div className="app">
+      <header className="app-header">
+        <h1>yournal</h1>
+        <span className="tagline">a line a day</span>
+      </header>
+
+      <div className="layout">
+        <CalendarView
+          entryKeys={entryKeys}
+          selected={selected}
+          onSelect={(day) => day && setSelected(day)}
+          month={month}
+          onMonthChange={setMonth}
+        />
+        <EntryEditor
+          dateKey={toDateKey(selected)}
+          onSaved={(key) => setEntryKeys((prev) => new Set(prev).add(key))}
+        />
+      </div>
+    </div>
   )
 }
 
