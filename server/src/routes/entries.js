@@ -44,6 +44,27 @@ router.get('/:date', async (req, res) => {
   res.json(data);
 });
 
+router.delete('/:date', async (req, res) => {
+  const { date } = req.params;
+  const userId = req.userId;
+
+  if (!date || !isValidDateKey(date)) {
+    return res.status(400).json({ error: 'date must be YYYY-MM-DD' });
+  }
+
+  const { data, error } = await db
+    .from('entries')
+    .delete()
+    .eq('user_id', userId)
+    .eq('date', date)
+    .select()
+    .maybeSingle();
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  res.json(data);
+});
+
 router.put('/:date', async (req, res) => {
   const { content, mood } = req.body ?? {};
   const { date } = req.params;

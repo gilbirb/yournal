@@ -41,6 +41,7 @@ function App() {
         <EntryEditor
           dateKey={toDateKey(selected)}
           onSaved={(key) => setEntryKeys((prev) => new Set(prev).add(key))}
+          onCleared={(key) => setEntryKeys((prev) => {const next = new Set(prev); next.delete(key); return next;})}
         />
       </div>
     </div>

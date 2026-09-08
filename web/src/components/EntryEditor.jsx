@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-import { getEntry, saveEntry } from "../api/entries";
+import { clearEntry, getEntry, saveEntry } from "../api/entries";
 import { formatDateKey } from "../lib/date";
 
 const STATUS_TEXT = {
   loading: 'Loading...',
   saving: 'Saving...',
+  clearing: 'Clearing...',
   saved: 'Saved',
   error: "Couldn't save, try again!",
   idle: '',
 };
 
-export default function EntryEditor({ dateKey, onSaved }) {
+export default function EntryEditor({ dateKey, onSaved, onCleared }) {
   const [draft, setDraft] = useState('');
   const [status, setStatus] = useState('loading');
 
@@ -38,7 +39,20 @@ export default function EntryEditor({ dateKey, onSaved }) {
     }
   }
 
-  const busy = status === 'loading' || status === 'saving';
+  async function handleClear() {
+    setStatus('clearing');
+    try {
+      await clearEntry(dateKey);
+      setDraft('');
+      setStatus('saved');
+      onCleared(dateKey);
+    } catch {
+      setStatus('error');
+    }
+  }
+
+  const busySave = status === 'loading' || status === 'saving';
+  const busyClear = status === 'loading' || status === 'clearing';
 
   return (
     <section className="card editor">
@@ -66,9 +80,14 @@ export default function EntryEditor({ dateKey, onSaved }) {
 
       <div className="editor-foot">
         <span className="hint">Ctrl + Enter to save</span>
-        <button className="btn" onClick={handleSave} disabled={busy}>
-          Save
-        </button>
+        <div className="btn-box">
+          <button className="btn btn-clear" onClick={handleClear} disabled={busyClear}>
+            Clear 
+          </button>
+          <button className="btn" onClick={handleSave} disabled={busySave}>
+            Save
+          </button>
+        </div>
       </div>
     </section>
   );

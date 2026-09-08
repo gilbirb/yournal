@@ -14,3 +14,9 @@ export const saveEntry = (date, { content, mood }) => {
     body: { content, mood },
   });
 }
+
+export const clearEntry = (date) => {
+  return request(`/entries/${date}`, {
+    method: 'DELETE',
+  });
+}

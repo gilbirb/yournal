@@ -119,6 +119,11 @@
   color: var(--text-soft);
 }
 
+.btn-box {
+  display: flex;
+  gap: 10px;
+}
+
 .btn {
   font: 500 15px var(--sans);
   padding: 9px 20px;
@@ -132,8 +137,19 @@
     filter 0.15s ease;
 }
 
+.btn-clear {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+
 .btn:hover:not(:disabled) {
   filter: brightness(1.08);
+}
+
+.btn-clear:hover:not(:disabled) {
+  filter: none;
+  background: var(--accent-bg);
 }
 
 .btn:disabled {
