@@ -161,3 +161,68 @@
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
+
+/* ---------- login ---------- */
+
+.login-wrap {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.login {
+  width: 100%;
+  max-width: 360px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login h1 {
+  font-size: 24px;
+  letter-spacing: -0.4px;
+}
+
+.login-sub {
+  color: var(--text-soft);
+  font-size: 14px;
+  margin-top: -10px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-h);
+}
+
+.field input {
+  font: 15px var(--sans);
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg);
+  color: var(--text-h);
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.login-error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.login .btn {
+  margin-top: 4px;
+}
