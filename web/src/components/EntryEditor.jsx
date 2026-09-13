@@ -7,13 +7,18 @@ const STATUS_TEXT = {
   saving: 'Saving...',
   clearing: 'Clearing...',
   saved: 'Saved',
-  error: "Couldn't save, try again!",
   idle: '',
 };
 
 export default function EntryEditor({ dateKey, onSaved, onCleared }) {
   const [draft, setDraft] = useState('');
   const [status, setStatus] = useState('loading');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  function fail(action, err) {
+    setErrorMsg(`Couldn't ${action}: ${err.message}`);
+    setStatus('error');
+  }
 
   useEffect(() => {
     let cancelled = false;
@@ -24,7 +29,7 @@ export default function EntryEditor({ dateKey, onSaved, onCleared }) {
         setDraft(entry?.content ?? '');
         setStatus('idle');
       })
-      .catch(() => !cancelled && setStatus('error'));
+      .catch((err) => !cancelled && fail('load', err));
     return () => { cancelled = true; };
   }, [dateKey]);
 
@@ -34,8 +39,8 @@ export default function EntryEditor({ dateKey, onSaved, onCleared }) {
       await saveEntry(dateKey, { content: draft });
       setStatus('saved');
       onSaved(dateKey);
-    } catch {
-      setStatus('error');
+    } catch (err) {
+      fail('save', err);
     }
   }
 
@@ -46,8 +51,8 @@ export default function EntryEditor({ dateKey, onSaved, onCleared }) {
       setDraft('');
       setStatus('saved');
       onCleared(dateKey);
-    } catch {
-      setStatus('error');
+    } catch (err) {
+      fail('clear', err);
     }
   }
 
@@ -58,7 +63,7 @@ export default function EntryEditor({ dateKey, onSaved, onCleared }) {
     <section className="card editor">
       <div className="editor-head">
         <h2 className="editor-date">{formatDateKey(dateKey)}</h2>
-        <p className="editor-meta" data-status={status}>{STATUS_TEXT[status]}</p>
+        <p className="editor-meta" data-status={status}>{status === 'error' ? errorMsg : STATUS_TEXT[status]}</p>
       </div>
 
       <textarea

@@ -14,7 +14,9 @@ export async function requireAuth(req, res, next) {
 
     const { data, error } = await db.auth.getUser(token);
     if (error || !data?.user) {
-        return res.status(401).json({ error: 'invalid token '});
+        // the real reason stays in server logs; the client just gets a 401
+        console.warn('requireAuth rejected token:', error?.message ?? 'no user');
+        return res.status(401).json({ error: 'invalid token' });
     }
 
     req.userId = data.user.id;

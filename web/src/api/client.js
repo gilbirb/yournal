@@ -8,15 +8,21 @@ export async function request(path, options = {}) {
 
   const { body, ...rest } = options;
 
-  const res = await fetch(`${BASE}${path}`, {
-    ...rest,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
-      ...rest.headers,
-    },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
+  let res;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      ...rest,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...rest.headers,
+      },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+  } catch {
+    // fetch only rejects when no response arrives: server down, wrong URL, or CORS
+    throw new Error(`can't reach the server at ${BASE}`);
+  }
 
   if (!res.ok) {
     const data = await res.json().catch(() => null);
