@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react';
 import CalendarView from './CalendarView';
 import EntryEditor from './EntryEditor';
 import { listEntries } from '../api/entries';
+import { supabase } from '../api/supabase';
 import { monthRange, toDateKey } from '../lib/date';
-
 
 export default function Journal() {
   const [month, setMonth] = useState(new Date());
@@ -27,6 +28,9 @@ export default function Journal() {
       <header className="app-header">
         <h1>yournal</h1>
         <span className="tagline">a line a day</span>
+        <button className="btn btn-clear btn-signout" onClick={() => supabase.auth.signOut()}>
+          Sign out
+        </button>
       </header>
 
       <div className="layout">
