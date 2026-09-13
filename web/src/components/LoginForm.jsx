@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '../api/supabase';
 
-export default function LoginForm() {
+export default function LoginForm({ onSwitchToSignUp }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
@@ -51,6 +51,13 @@ export default function LoginForm() {
         <button className="btn" type="submit" disabled={submitting}>
           {submitting ? 'Signing in...' : 'Sign in'}
         </button>
+
+        <p className="login-switch">
+          No account yet?{' '}
+          <button type="button" className="link-btn" onClick={onSwitchToSignUp}>
+            Sign up
+          </button>
+        </p>
       </form>
     </div>
   );
