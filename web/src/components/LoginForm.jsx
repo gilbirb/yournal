@@ -24,6 +24,23 @@ export default function LoginForm({ onSwitchToSignUp }) {
         <h1>yournal</h1>
         <p className="login-sub">Sign in to your journal</p>
 
+        <div className="demo-note">
+          <p>
+            Just looking around? Use <code>testuser@test.test</code> with the password{' '}
+            <code>test</code>.
+          </p>
+          <button
+            type="button"
+            className="link-btn"
+            onClick={() => {
+              setEmail('testuser@test.test');
+              setPassword('test');
+            }}
+          >
+            Fill in test account
+          </button>
+        </div>
+
         <label className="field">
           <span>Email</span>
           <input

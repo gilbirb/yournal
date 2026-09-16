@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import CalendarView from './CalendarView';
+import ThemeToggle from './ThemeToggle';
 import EntryEditor from './EntryEditor';
 import { listEntries } from '../api/entries';
 import { supabase } from '../api/supabase';
@@ -28,6 +29,7 @@ export default function Journal() {
       <header className="app-header">
         <h1>yournal</h1>
         <span className="tagline">a line a day</span>
+        <ThemeToggle />
         <button className="btn btn-clear btn-signout" onClick={() => supabase.auth.signOut()}>
           Sign out
         </button>
