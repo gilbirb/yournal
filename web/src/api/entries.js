@@ -15,6 +15,10 @@ export const saveEntry = (date, { content, mood }) => {
   });
 }
 
+export const searchEntries = (q) => {
+  return request(`/entries/search?q=${encodeURIComponent(q)}`);
+}
+
 export const clearEntry = (date) => {
   return request(`/entries/${date}`, {
     method: 'DELETE',

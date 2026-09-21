@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import CalendarView from './CalendarView';
 import ThemeToggle from './ThemeToggle';
 import EntryEditor from './EntryEditor';
+import SearchPanel from './SearchPanel';
 import { listEntries } from '../api/entries';
 import { supabase } from '../api/supabase';
-import { monthRange, toDateKey } from '../lib/date';
+import { fromDateKey, monthRange, toDateKey } from '../lib/date';
 
 export default function Journal() {
   const [month, setMonth] = useState(new Date());
@@ -24,6 +25,13 @@ export default function Journal() {
     return () => { cancelled = true; }; 
   }, [month]);
 
+  // a search hit has to move both the editor and the visible month
+  function jumpTo(dateKey) {
+    const day = fromDateKey(dateKey);
+    setSelected(day);
+    setMonth(day);
+  }
+
   return (
     <div className="app">
       <header className="app-header">
@@ -36,13 +44,16 @@ export default function Journal() {
       </header>
 
       <div className="layout">
-        <CalendarView
-          entryKeys={entryKeys}
-          selected={selected}
-          onSelect={(day) => day && setSelected(day)}
-          month={month}
-          onMonthChange={setMonth}
-        />
+        <div className="sidebar">
+          <SearchPanel onPick={jumpTo} selectedKey={toDateKey(selected)} />
+          <CalendarView
+            entryKeys={entryKeys}
+            selected={selected}
+            onSelect={(day) => day && setSelected(day)}
+            month={month}
+            onMonthChange={setMonth}
+          />
+        </div>
         <EntryEditor
           key={toDateKey(selected)}
           dateKey={toDateKey(selected)}

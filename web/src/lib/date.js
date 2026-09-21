@@ -25,3 +25,8 @@ export const monthRange = (date) => {
   const to = toDateKey(new Date(year, month + 1, 0));
   return { from: from, to: to };
 }
+// "2026-09-21" -> Date at local midnight (never new Date(key), which parses as UTC)
+export const fromDateKey = (dateKey) => {
+  const [year, month, day] = dateKey.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
