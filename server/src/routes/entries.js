@@ -25,6 +25,25 @@ router.get('/', async (req, res) => {
   res.json(data);
 });
 
+router.get('/search', async (req, res) => {
+  const { q } = req.query;
+  const userId = req.userId;
+
+  if (!q || q.length < 2 || q.length > 100) {
+    return res.status(400).json({ error: 'Invalid search query' });
+  }
+
+  const { data, error } = await db
+    .from('entries')
+    .select('date, content')
+    .eq('user_id', userId)
+    .textSearch('search_vector', q, { type: 'websearch' })
+    .order('date', { ascending: false });
+
+  if (error) return res.status(500).json({ error: error.message });
+  res.json(data);
+});
+
 router.get('/:date', async (req, res) => {
   const { date } = req.params;
   const userId = req.userId;
