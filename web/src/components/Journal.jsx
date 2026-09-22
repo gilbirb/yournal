@@ -45,7 +45,6 @@ export default function Journal() {
 
       <div className="layout">
         <div className="sidebar">
-          <SearchPanel onPick={jumpTo} selectedKey={toDateKey(selected)} />
           <CalendarView
             entryKeys={entryKeys}
             selected={selected}
@@ -53,6 +52,7 @@ export default function Journal() {
             month={month}
             onMonthChange={setMonth}
           />
+          <SearchPanel onPick={jumpTo} selectedKey={toDateKey(selected)} />
         </div>
         <EntryEditor
           key={toDateKey(selected)}
