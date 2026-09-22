@@ -26,3 +26,9 @@ create trigger entries_touch_updated_at
   before update on public.entries
   for each row
   execute function public.touch_updated_at();
+
+alter table public.entries
+  add column search_vector tsvector
+  generated always as (to_tsvector('english', content)) stored;
+
+create index entries_search_idx on public.entries using gin (search_vector);
