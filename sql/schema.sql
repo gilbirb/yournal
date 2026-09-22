@@ -32,3 +32,27 @@ alter table public.entries
   generated always as (to_tsvector('english', content)) stored;
 
 create index entries_search_idx on public.entries using gin (search_vector);
+
+create table public.llm_usage (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  day     date not null default current_date,
+  count   int  not null default 0,
+  primary key (user_id, day)
+);
+
+alter table public.llm_usage enable row level security;
+
+create or replace function public.bump_llm_usage(p_user_id uuid)
+returns int
+language sql
+as $$
+  insert into public.llm_usage (user_id, day, count)
+  values (p_user_id, current_date, 1)
+  on conflict (user_id, day)
+  do update set count = llm_usage.count + 1
+  returning count;
+$$;
+
+grant all on table public.llm_usage to service_role;
+revoke execute on function public.bump_llm_usage(uuid) from public, anon, authenticated;
+grant execute on function public.bump_llm_usage(uuid) to service_role;

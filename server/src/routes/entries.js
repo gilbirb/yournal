@@ -69,16 +69,28 @@ router.post('/search/ask', async (req, res) => {
 
   let plan;
   let mode;
-  try {
-    plan = validatePlan(await planSearch(question, today));
-    mode = 'ai';
-  } catch (err) {
-    // rate limits, a missing key and malformed model output all land here;
-    // the user still gets keyword results, so this log is the only trace
-    console.warn('AI search fell back:', err.message);
+
+  const limit = userId === process.env.DEMO_USER_ID ? 30 : 10;
+  const { data: used, error: usageError } = await db.rpc('bump_llm_usage', { p_user_id: userId });
+  const allowed = !usageError && used <= limit;
+
+  if (!allowed) {
+    if (usageError) console.warn('usage check failed:', usageError.message);
     plan = { terms: [question] };
-    mode = 'fallback';
+    mode = 'limited';
+  } else {
+    try {
+      plan = validatePlan(await planSearch(question, today));
+      mode = 'ai';
+    } catch (err) {
+      // rate limits, a missing key and malformed model output all land here;
+      // the user still gets keyword results, so this log is the only trace
+      console.warn('AI search fell back:', err.message);
+      plan = { terms: [question] };
+      mode = 'fallback';
+    }
   }
+
 
   const { data, error } = await findEntries({ userId, ...plan });
   if (error) return res.status(500).json({ error: error.message });

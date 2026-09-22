@@ -30,3 +30,23 @@ export const fromDateKey = (dateKey) => {
   const [year, month, day] = dateKey.split('-').map(Number);
   return new Date(year, month - 1, day);
 };
+
+// "2026-09-14" -> "14 Sep 2026"
+export const formatShortDateKey = (dateKey, locale = undefined) =>
+  fromDateKey(dateKey).toLocaleDateString(locale, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+
+// the date range an AI search was limited to, or null if it had none
+export const formatDateRange = (from, to) => {
+  if (from && to) {
+    return from === to
+      ? formatShortDateKey(from)
+      : `${formatShortDateKey(from)} to ${formatShortDateKey(to)}`;
+  }
+  if (from) return `from ${formatShortDateKey(from)}`;
+  if (to) return `until ${formatShortDateKey(to)}`;
+  return null;
+};
