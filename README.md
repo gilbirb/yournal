@@ -5,7 +5,7 @@ you've written on get a little dot. You can search everything you've written,
 either by keyword or by asking a question in plain words, like "when did I
 last go to the beach?" or "what did I do last week?".
 
-**Live:** [yournal-frontend.vercel.app](https://yournal-frontend.vercel.app).
+**Live:** [yournalapp.vercel.app](https://yournalapp.vercel.app).
 There's a shared demo account on the login screen if you just want a look.
 Anyone can read and edit it, so don't write anything real in there.
 
